@@ -1,0 +1,22 @@
+# 视频文件
+*.MOV
+*.mov
+*.mp4
+*.avi
+*.mkv
+*.wmv
+
+# macOS
+.DS_Store
+
+# Python 缓存
+__pycache__/
+*.pyc
+
+# Word 临时文件
+~$*
+
+# PyInstaller
+dist/
+build/
+*.spec
