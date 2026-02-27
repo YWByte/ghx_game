@@ -1,0 +1,39 @@
+name: 打包 Windows exe
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: 签出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安装依赖
+        run: |
+          pip install pygame Pillow pyinstaller
+
+      - name: 打包 exe
+        run: |
+          pyinstaller --onefile --windowed --name "垃圾分类小能手" main.py
+
+      - name: 上传 exe 产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: 垃圾分类小能手-windows
+          path: dist/垃圾分类小能手.exe
+
+      - name: 发布到 Release（仅 tag 触发时）
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/垃圾分类小能手.exe
